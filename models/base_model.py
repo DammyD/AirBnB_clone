@@ -19,9 +19,10 @@ class BaseModel:
 
     def __str__(self):
         """ the string for instance
-	class name, id, dict
+        class name, id, dict
         """
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+        return "[{}] ({}) \
+{}".format(self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
         """updates the public instance attribute
