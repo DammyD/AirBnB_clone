@@ -12,17 +12,17 @@ class BaseModel:
     """ the base model"""
 
     def __init__(self):
-		"""
-		initialize object with the attributes
-		"""
+	"""
+	initialize object with the attributes
+	"""
         self.id = str(uuid.uuid4())
         self.created_at = datetime.datetime.now()
         self.updated_at = datetime.datetime.now()
 
     def __str__(self):
         """ the string for instance
-		class name, id, dict
-		"""
+	class name, id, dict
+	"""
         return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
