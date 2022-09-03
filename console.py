@@ -1,11 +1,15 @@
 #!/usr/bin/python3
 """Modules that contains the entry point of the command interpreter."""
 import cmd
+from models.base_model import BaseModel
+from models import storage
+
+
+avaliable_classes = {'BaseModel': BaseModel}
 
 
 class HBNBCommand(cmd.Cmd):
     """This class represent the command processor"""
-
     prompt = '(hbnb) '
 
     def do_help(self, arg):
@@ -21,6 +25,97 @@ class HBNBCommand(cmd.Cmd):
     def do_EOF(self, line):
         """The command to exit the program"""
         return True
+
+    def do_create(self, arg):
+        """Creates a new instance.
+        """
+        args = arg.split()
+        if not check_classname(args):
+            return
+
+        new_obj = avaliable_classes[args[0]]
+        new_obj.save()
+        print(new_obj.id)
+
+    def do_show(self, arg):
+        """Prints the string representation of an instance.
+        """
+        args = arg.split()
+        if not check_classname(args, id=True):
+            return
+
+        instance_objs = storage.all()
+        key = "{}.{}".format(args[0], args[1])
+        req_instance = instance_objs.get(key, None)
+        if req_instance is None:
+            print("** no instance found **")
+            return
+        print(req_instance)
+
+    def do_destroy(self, arg):
+        """Deletes an instance based on the class name and id.
+        """
+        args = arg.split()
+        if not check_classname(args, id=True):
+            return
+
+        instance_objs = storage.all()
+        key = "{}.{}".format(args[0], args[1])
+        req_instance = instance_objs.get(key, None)
+        if req_instance is None:
+            print("** no instance found **")
+            return
+
+        del instance_objs[key]
+        storage.save()
+
+    def do_all(self, arg):
+        """Prints string representation of all instances.
+        """
+        args = arg.split()
+        all_objs = storage.all()
+
+        if len(args) < 1:
+            print(["{}".format(str(v)) for _, v in all_objs.items()])
+            return
+        if args[0] not in avaliable_classes.keys():
+            print("** class doesn't exist **")
+            return
+        else:
+            print(["{}".format(str(v))
+                   for _, v in all_objs.items() if type(v).__name__ == args[0]])
+            return
+
+    def do_update(self, arg: str):
+        """Updates an instance based on the class name and id.
+        """
+        args = arg.split()
+        if not check_classname(args, id=True):
+            return
+
+        instance_objs = storage.all()
+        key = "{}.{}".format(args[0], args[1])
+        req_instance = instance_objs.get(key, None)
+        if req_instance is None:
+            print("** no instance found **")
+            return
+        setattr(req_instance, args[2], args[3])
+        req_instance.save()
+
+
+def check_classname(args, id=False):
+    """Runs checks on args to validate classname entry.
+    """
+    if len(args) < 1:
+        print("** class name missing **")
+        return False
+    if args[0] not in avaliable_classes.keys():
+        print("** class doesn't exist **")
+        return False
+    if len(args) < 2 and id:
+        print("** instance id missing **")
+        return False
+    return True
 
 
 if __name__ == '__main__':
