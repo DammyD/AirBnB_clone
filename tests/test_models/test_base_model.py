@@ -236,6 +236,3 @@ class TestBaseModel(unittest.TestCase):
         super().tearDown()
         if os.path.isfile('file.json'):
             os.unlink('file.json')
-
-
-
