@@ -4,6 +4,7 @@ this is the base model that all common attributes/methods
 for other classes
 """
 
+from unittest import result
 import uuid
 import datetime
 
