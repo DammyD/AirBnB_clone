@@ -13,10 +13,16 @@ class BaseModel:
     """ the base model"""
 
     def __init__(self, *args, **kwargs):
-        """initialize object with the attributes"""
+        """
+        initialize object with the attributes
+
+        Args:
+            *args (tuple): Ignored.
+            kwargs: A dictionary of attribute keys-value pairs.
+        """
         if len(kwargs) != 0:
             for key, value in kwargs.items():
-                if key == __class__:
+                if key == "__class__":
                     continue
                 if key == 'created_at' or key == 'update_at':
                     value = datetime.datetime.fromisoformat(value)
