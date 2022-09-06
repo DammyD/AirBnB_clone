@@ -14,6 +14,7 @@ class FileStorage:
     """
     __file_path = 'file.json'
     __objects = {}
+
     def __init__(self):
         """Initializes a FileStorage instance."""
         self.model_classes = {
@@ -28,18 +29,18 @@ class FileStorage:
 
     def all(self):
         """returns the dictionary representation"""
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         """sets in objects the obj with key"""
         dict_key = '{}.{}'.format(obj.__class__.__name__, obj.id)
-        FileStorage.__objects[dict_key] = obj
+        self.__objects[dict_key] = obj
 
     def save(self):
         """serializes __objects to the JSON file"""
-        with open(FileStorage.__file_path, mode='w') as file:
+        with open(self.__file_path, mode='w') as file:
             json_format = {}
-            for key, value in FileStorage.__objects.items():
+            for key, value in self.__objects.items():
 
                 json_format[key] = value.to_dict()
             file.writeF(JSONEncoder().encode(json_format))
