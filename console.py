@@ -90,7 +90,7 @@ class HBNBCommand(cmd.Cmd):
             return
         else:
             print(["{}".format(str(v))
-                   for _, v in all_objs.items() if type(v).__name__ == args[0]])
+                  for _, v in all_objs.items() if type(v).__name__ == args[0]])
             return
 
     def do_update(self, arg: str):
