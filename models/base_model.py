@@ -7,7 +7,6 @@ for other classes
 from unittest import result
 import uuid
 import datetime
-from models import storage
 
 class BaseModel:
     """ the base model"""
@@ -31,7 +30,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.datetime.now()
             self.updated_at = datetime.datetime.now()
-            
+            from models import storage
             storage.new(self)
 
     def __str__(self):
